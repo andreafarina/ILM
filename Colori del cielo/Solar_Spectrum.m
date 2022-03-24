@@ -18,17 +18,17 @@
 clearvars;
 close all
 %% TYPE
-choice = menu('Choice:','daylight','sunset','cloudy');
+choice = menu('Choice:','zenith','sunset','horizon');
 switch choice
     case 1
-        type = 'daylight';
+        type = 'zenith';
     case 2
         type = 'sunset';
         answer = inputdlg('Enter optical thickness (typ. value 10)');
         opt_thick = str2double(answer{1});
     case 3
-        type = 'cloudy';
-        answer = inputdlg('Enter optical thickness (typ. value 10)');
+        type = 'horizon';
+        answer = inputdlg('Enter optical thickness (typ. value 5)');
         opt_thick = str2double(answer{1});
 end
 %% load solar spectrum
@@ -56,12 +56,12 @@ p1.Color = 'k';
 %% PLOT RAYLEIGH
 LAMBDA0 = 300;
 switch lower(type)
-    case 'daylight'
+    case 'zenith'
         Srayleigh = 1 - exp(-0.4*(LAMBDA0./lambda).^4*max(y)); % for 0.4 see
         % Bohren - Atmospheric Optics
     case 'sunset'
         Srayleigh = exp(-opt_thick*(LAMBDA0./lambda).^4*max(y));
-    case 'cloudy'
+    case 'horizon'
         Srayleigh = 1- exp(-opt_thick*(LAMBDA0./lambda).^4*max(y)); 
 end
 
