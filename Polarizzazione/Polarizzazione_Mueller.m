@@ -51,13 +51,13 @@ Leta = @(eta,alfa)Mt(-alfa)*LR(eta)*Mt(alfa);
 % Le matrici di Mueller sono inserite in ordine inverso alla propagazione
 %% Inserire qui il vettore dei parametri di Stokes del campo di partenza
 % Es 1
-%S0 = [41; 0; 9; 40];
+S0 = [41; 0; 9; 40];
 
 % Es 2
-S0 = [3; -1; 2; -2];
+%S0 = [3; -1; 2; -2];
 
 % luce non polarizzata
-S0 = [1;0;0;0];
+%S0 = [1;0;0;0];
 
 % luce polarizzata //
 %S0 = [1;1;0;0];
@@ -67,9 +67,9 @@ S0 = [1;0;0;0];
 %% Inserire qui la matrice di propagazione
 % comporre in ordine inverso le funzioni implicite sopra nella sezione
 % "Componenti Ottici"
-M1 = P(-pi/4);
-M2 = Leta(pi/3,pi/6);
-M = M2*M1;
+M1 = P(pi/4);
+M2 = L4(0);%Leta(pi/3,pi/6);
+M = 1;%M2*M1;
 %% ========================================================================
 % campo in uscita
 S = M*S0;
@@ -140,10 +140,10 @@ disp('------- Campo in uscita ---------');
 disp(['Ex = ',num2str(Ef(1))]);
 disp(['Ey = ',num2str(Ef(2))]);
 %% utilizzo del toolbox PhaseArray
-  figure,polellip(Ef),axis image
-  [TAU,EPSILON,AR,RS] = polellip(Ef);
+  %figure,polellip(Ef),axis image
+  %[TAU,EPSILON,AR,RS] = polellip(Ef);
 %% per il corso ILM facciamo il plot al variare dell'angolo di
-%% un polarizzatore. Misura di intensità
+% %% un polarizzatore. Misura di intensità
 theta = linspace(-pi/4,pi,360);
 for i = 1:numel(theta)
     aa = P(theta(i))*S;
@@ -160,9 +160,9 @@ yline(a^2,'r','LineWidth',1);
 yline(b^2,'b','LineWidth',1);
 xline(ax_ang,'g','LineWidth',1);
 hold on
-%plot(45,0.5*(S(1) + S(2)),'*')
+plot(45,0.5*(S(1) + S(2)),'*')
 %% crea labels sul grafico
-annotation(figure1,'textbox',...
+ annotation(figure1,'textbox',...
     [0.84 0.85 0.04 0.05],'String',{'a^2'},...
     'FontSize',14,...
     'FitBoxToText','off',...
@@ -173,9 +173,11 @@ annotation(figure1,'textbox',...
     'FontSize',14,...
     'FitBoxToText','off',...
     'EdgeColor','none');
-annotation(figure1,'textbox',...
-    [(ax_ang+48)/225 0.44 0.04 0.05],...
-    'String','\Psi',...
-    'FontSize',16,...
-    'FitBoxToText','off',...
-    'EdgeColor','none');
+if ~isnan(ax_ang)
+    annotation(figure1,'textbox',...
+        [(ax_ang+48)/225 0.44 0.04 0.05],...
+        'String','\Psi',...
+        'FontSize',16,...
+        'FitBoxToText','off',...
+        'EdgeColor','none');
+end

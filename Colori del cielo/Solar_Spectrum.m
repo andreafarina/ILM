@@ -32,7 +32,7 @@ switch choice
         opt_thick = str2double(answer{1});
 end
 %% load solar spectrum
-a = dlmread('spectral_solar.txt');
+a = table2array(readtable('spectral_solar.txt'));
 lambda = a(:,3);    % nm
 y = a(:,7);         % W/m^2/nm
 LMAX = 1050;
@@ -69,11 +69,12 @@ hold on
 plot(lambda,Srayleigh,'-b','LineWidth',2),ylim([min(y) max(y)])
 
 %% load photopic curve
-a = dlmread('ssvl2e_1.txt');
+a = table2array(readtable('ssvl2e_1.txt'));
 lambda_p = a(:,1);
 y_p = a(:,2)./max(a(:,2))*max(y);
 plot(lambda_p,y_p,'-g','LineWidth',2),ylim([min(y) max(y)]),
-xline(lambda_VIS(1),'--p','LineWidth',2),xline(lambda_VIS(2),'--r','LineWidth',2);
+xline(lambda_VIS(1),'b--','LineWidth',2),
+xline(lambda_VIS(2),'r--','LineWidth',2);
 legend('solar spectrum',['Rayleigh (',type,')'],'Photopic','violet','red')
 pause;
 
@@ -87,7 +88,7 @@ f = figure('Name','Diffused spectrum');
     p1.LineStyle = '-';
     p1.LineWidth = 3;
     p1.Color = 'k';
-    xline(lambda_VIS(1),'--p','LineWidth',2),xline(lambda_VIS(2),'--r','LineWidth',2);
+    xline(lambda_VIS(1),'--b','LineWidth',2),xline(lambda_VIS(2),'--r','LineWidth',2);
 legend('Diffused spectrum','violet','red'),hold on
 pause;
 %% calculate the perceived colour

@@ -4,13 +4,13 @@
 % - trace of the output plane
 % - pathlength histogram
 close all;
-PHASE = 'HG';%'HG';'RAY';
-PLOT = 1;
+PHASE = 'HG';   % HG: Heyniey-Greenstein, RAY: Rayleigh phase functions
+PLOT = 1;       % when PLOT = 1, set N = 1 to see a single photon trajectory
 N = 1;
-mus = 1;
-g = 0.999;
+mus = 10;
+g = 0.5;
 musp = (1-g)*mus;
-thick = 10;
+thick = 5;
 %% run the simulation
 [out,~,SStep,CCost,PPhi] = MC_3D(mus,g,thick,N,PHASE,PLOT);
 %% statistics of the step size

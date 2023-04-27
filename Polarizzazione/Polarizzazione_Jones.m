@@ -49,8 +49,8 @@ Leta = @(eta,alfa)Jt(-alfa)*LR(eta)*Jt(alfa);
 E = [sqrt(41/2); sqrt(41/2)*exp(1i*1.3495)];
 % Es 2 
 E=[1;sqrt(2)*exp(-1i*pi/4)];
-
-E = [1;0.5*exp(1i*3*pi/4)];%*exp(1i*pi/2)];
+%E = [1;exp(1i*pi/2)];
+%E = [1;0.5*exp(1i*3*pi/4)];%*exp(1i*pi/2)];
 %E = [5/sqrt(2);5/sqrt(2)*exp(1i*0.2838)];
 %E = [sqrt(97/2);sqrt(97/2)*exp(1i*0.8364)];
 %E=E./norm(E);
@@ -58,8 +58,8 @@ E = [1;0.5*exp(1i*3*pi/4)];%*exp(1i*pi/2)];
 %% Inserire qui la matrice di propagazione
 % comporre in ordine inverso le funzioni implicite sopra nella sezione
 % "Componenti Ottici"
-M=L2(pi/6);
-M = 1;%L2(pi/3);%L2(0);%L4(0);%1;%L4(pi/3);%
+%M=P_H;L2(pi/6);
+M = 1;%L4(pi/2);%L2(pi/3);%L2(0);%L4(0);%1;%L4(pi/3);%
 %% ========================================================================
 % campo in uscita
 Ef=M*E;
@@ -129,8 +129,8 @@ disp('------- Campo in uscita ---------');
 disp(['Ex = ',num2str(Ef(1))]);
 disp(['Ey = ',num2str(Ef(2))]);
 %% utilizzo del toolbox PhaseArray
-%   figure,polellip(Ef)
-%   [TAU,EPSILON,AR,RS] = polellip(Ef);
+   figure,polellip(Ef)
+ %  [TAU,EPSILON,AR,RS] = polellip(Ef);
 %% 03/03/2021 per il corso ILM facciamo il plot al variare dell'angolo di
 %% un polarizzatore. Misura di intensità
 theta = linspace(-pi/4,pi,360);
@@ -144,7 +144,11 @@ plot(thetad,I),xlim([-45 180]),xlabel('\theta','FontSize',16),
 ylabel('I_{riv}(\theta)','FontSize',16),grid
 yline(norm(Ef)^2/2,'LineWidth',1.5)
 xline(0,'LineWidth',1);
-ylim([b^2*(0.8) a^2*(1.1)])
+ka = 1.1;
+kb = 0.8;
+ylimb = b^2*kb;
+ylima = a^2*ka;
+ylim([ylimb ylima])
 %% disegnamo le linee e punti interessanti
 yline(a^2,'r','LineWidth',1);
 yline(b^2,'b','LineWidth',1);
@@ -152,20 +156,26 @@ xline(ax_ang,'g','LineWidth',1);
 hold on
 %plot(45,0.5*(S(1) + S(2)),'*')
 %% crea labels sul grafico
+Dy = ylima-ylimb; %range y del grafico
+ya = (a^2-ylimb)/Dy - 0.1;
+yb = (b^2-ylimb)/Dy + 0.1;
+ypsi = (mean(I)-ylimb)/Dy;
 annotation(figure1,'textbox',...
-    [0.84 0.85 0.04 0.05],'String',{'a^2'},...
+    [0.84 ya 0.04 0.05],'String',{'a^2'},...
     'FontSize',14,...
     'FitBoxToText','off',...
     'EdgeColor','none');
 annotation(figure1,'textbox',...
-    [0.84 0.14 0.04 0.05],...
+    [0.84 yb 0.04 0.05],...
     'String','b^2',...
     'FontSize',14,...
     'FitBoxToText','off',...
     'EdgeColor','none');
-annotation(figure1,'textbox',...
-    [(ax_ang+48)/225 0.44 0.04 0.05],...
-    'String','\Psi',...
-    'FontSize',16,...
-    'FitBoxToText','off',...
-    'EdgeColor','none');
+if ~isnan(ax_ang)
+    annotation(figure1,'textbox',...
+        [(ax_ang+48)/225 ypsi 0.04 0.05],...
+        'String','\Psi',...
+        'FontSize',16,...
+        'FitBoxToText','off',...
+        'EdgeColor','none');
+end
